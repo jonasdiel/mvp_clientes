@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  front-end:
+    build:
+      context: ..
+      dockerfile: front-end/Dockerfile
+    container_name: mvp-clientes-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "${PORT:-4200}:4200"
+    volumes:
+      - ..:/workspace
+      - /workspace/node_modules
+    networks:
+      - mvp-network
+    command: npx nx serve front-end --host=0.0.0.0 --port=4200
+
+networks:
+  mvp-network:
+    driver: bridge
