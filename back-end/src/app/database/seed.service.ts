@@ -22,25 +22,23 @@ export class SeedService implements OnModuleInit {
   private async seedAdminUser() {
     try {
       const adminEmail = 'admin@example.com';
-      const existingAdmin = await this.userRepository.findOne({
-        where: { email: adminEmail },
+      const adminPassword = 'password123';
+
+      // Delete existing admin if present
+      await this.userRepository.delete({ email: adminEmail });
+
+      // Create new admin with fresh password
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+      const admin = this.userRepository.create({
+        email: adminEmail,
+        password: hashedPassword,
+        name: 'Admin User',
       });
 
-      if (!existingAdmin) {
-        const hashedPassword = await bcrypt.hash('password123', 10);
-        const admin = this.userRepository.create({
-          email: adminEmail,
-          password: hashedPassword,
-          name: 'Admin User',
-        });
-
-        await this.userRepository.save(admin);
-        this.logger.log(
-          `✅ Admin user created successfully (email: ${adminEmail}, password: password123)`
-        );
-      } else {
-        this.logger.log('ℹ️  Admin user already exists');
-      }
+      await this.userRepository.save(admin);
+      this.logger.log(
+        `✅ Admin user created successfully (email: ${adminEmail}, password: ${adminPassword})`
+      );
     } catch (error) {
       this.logger.error('Failed to seed admin user', error);
     }
