@@ -27,23 +27,12 @@ module.exports = [
     ],
   },
   { plugins: { '@nx': nxEslintPlugin } },
+  ...compat.extends('plugin:@typescript-eslint/recommended'),
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
-      '@nx/enforce-module-boundaries': [
-        'error',
-        {
-          enforceBuildableLibDependency: true,
-          allow: [],
-          depConstraints: [
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
-            },
-          ],
-        },
-      ],
+      '@nx/enforce-module-boundaries': 'off', // Allow path aliases like @/ in imports
+      '@typescript-eslint/no-require-imports': 'off', // Allow require in config files
     },
   },
-  ...compat.extends('plugin:@typescript-eslint/recommended'),
 ];

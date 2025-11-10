@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import {
   NotFoundException,
   InternalServerErrorException,
@@ -13,7 +12,6 @@ import { QueryClientsDto } from './dto/query-clients.dto';
 
 describe('ClientsService', () => {
   let service: ClientsService;
-  let repository: Repository<Client>;
 
   const mockClient: Client = {
     id: '550e8400-e29b-41d4-a716-446655440000',
@@ -46,7 +44,6 @@ describe('ClientsService', () => {
     }).compile();
 
     service = module.get<ClientsService>(ClientsService);
-    repository = module.get<Repository<Client>>(getRepositoryToken(Client));
 
     // Clear all mocks before each test
     jest.clearAllMocks();

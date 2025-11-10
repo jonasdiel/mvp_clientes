@@ -36,7 +36,7 @@ export function ClientDetailPage() {
       // Usa recordView para incrementar o contador de visualizações
       const data = await clientsService.recordView(id);
       setClient(data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message =
         error.response?.data?.message || 'Erro ao carregar cliente';
       toast.error(message);
@@ -61,7 +61,7 @@ export function ClientDetailPage() {
       await clientsService.deleteClient(client.id);
       toast.success('Cliente excluído com sucesso!');
       navigate('/clients');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message =
         error.response?.data?.message || 'Erro ao excluir cliente';
       toast.error(message);

@@ -42,7 +42,7 @@ export function ClientModal({
 
       onOpenChange(false);
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.response?.data?.message || 'Erro ao salvar cliente';
       toast.error(message);
     } finally {

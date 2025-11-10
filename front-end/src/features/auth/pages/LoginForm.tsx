@@ -42,22 +42,27 @@ export function LoginForm({
       setTimeout(() => {
         navigate('/dashboard');
       }, 1500);
-    } catch (err: any) {
-      console.error('Login error:', err);
+    } catch (err: unknown) {
+      const error = err as {
+        response?: { status?: number; data?: { message?: string } };
+        code?: string;
+      };
+      console.error('Login error:', error);
       setIsLoading(false);
 
       // Tratar diferentes tipos de erro
-      if (err.response?.status === 401) {
+      if (error.response?.status === 401) {
         setError('Email ou senha incorretos');
-      } else if (err.response?.status === 400) {
+      } else if (error.response?.status === 400) {
         setError('Dados inválidos. Verifique os campos e tente novamente');
-      } else if (err.code === 'ERR_NETWORK') {
+      } else if (error.code === 'ERR_NETWORK') {
         setError(
           'Erro de conexão. Verifique sua internet ou se o servidor está rodando'
         );
       } else {
         setError(
-          err.response?.data?.message || 'Erro ao fazer login. Tente novamente'
+          error.response?.data?.message ||
+            'Erro ao fazer login. Tente novamente'
         );
       }
     }

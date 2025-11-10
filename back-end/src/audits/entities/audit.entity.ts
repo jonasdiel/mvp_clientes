@@ -41,10 +41,10 @@ export class Audit {
   recordId: string;
 
   @Column({ type: 'jsonb', nullable: true })
-  previousData: any;
+  previousData: Record<string, unknown>;
 
   @Column({ type: 'jsonb', nullable: true })
-  newData: any;
+  newData: Record<string, unknown>;
 
   @Column({ type: 'varchar', length: 45, nullable: true })
   ipAddress: string;

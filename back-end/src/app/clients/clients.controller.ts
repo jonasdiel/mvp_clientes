@@ -29,6 +29,13 @@ import { ClientResponseDto } from './dto/client-response.dto';
 import { Client } from './entities/client.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+interface RequestWithUser extends Request {
+  user?: {
+    id: string;
+    email: string;
+  };
+}
+
 @ApiTags('clients')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -54,10 +61,10 @@ export class ClientsController {
   })
   create(
     @Body() createClientDto: CreateClientDto,
-    @Req() req: Request,
+    @Req() req: RequestWithUser,
     @Ip() ip: string
   ): Promise<Client> {
-    const userId = (req as any).user?.id;
+    const userId = req.user?.id;
     const userAgent = req.headers['user-agent'];
     return this.clientsService.create(createClientDto, userId, ip, userAgent);
   }
@@ -130,10 +137,10 @@ export class ClientsController {
   })
   recordView(
     @Param('id') id: string,
-    @Req() req: Request,
+    @Req() req: RequestWithUser,
     @Ip() ip: string
   ): Promise<Client> {
-    const userId = (req as any).user?.id;
+    const userId = req.user?.id;
     const userAgent = req.headers['user-agent'];
     return this.clientsService.findOne(id, true, userId, ip, userAgent);
   }
@@ -165,10 +172,10 @@ export class ClientsController {
   update(
     @Param('id') id: string,
     @Body() updateClientDto: UpdateClientDto,
-    @Req() req: Request,
+    @Req() req: RequestWithUser,
     @Ip() ip: string
   ): Promise<Client> {
-    const userId = (req as any).user?.id;
+    const userId = req.user?.id;
     const userAgent = req.headers['user-agent'];
     return this.clientsService.update(
       id,
@@ -213,10 +220,10 @@ export class ClientsController {
   })
   remove(
     @Param('id') id: string,
-    @Req() req: Request,
+    @Req() req: RequestWithUser,
     @Ip() ip: string
   ): Promise<{ deleted: boolean }> {
-    const userId = (req as any).user?.id;
+    const userId = req.user?.id;
     const userAgent = req.headers['user-agent'];
     return this.clientsService.remove(id, userId, ip, userAgent);
   }

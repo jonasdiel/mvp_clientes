@@ -18,7 +18,10 @@ export class AuditInterceptor implements NestInterceptor {
     private auditsService: AuditsService
   ) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler
+  ): Observable<unknown> {
     const auditMetadata = this.reflector.get<AuditMetadata>(
       AUDIT_KEY,
       context.getHandler()
@@ -39,9 +42,9 @@ export class AuditInterceptor implements NestInterceptor {
           const userId = user?.id;
 
           // Extrai o ID do registro da resposta
-          let recordId: string = null;
-          let previousData: any = null;
-          let newData: any = null;
+          let recordId: string | null = null;
+          let previousData: Record<string, unknown> | null = null;
+          let newData: Record<string, unknown> | null = null;
 
           // Para operações READ, UPDATE, DELETE, o ID pode estar nos parâmetros
           if (request.params?.id) {
@@ -87,7 +90,9 @@ export class AuditInterceptor implements NestInterceptor {
   /**
    * Remove campos sensíveis dos dados antes de salvar no audit
    */
-  private sanitizeData(data: any): any {
+  private sanitizeData(
+    data: Record<string, unknown>
+  ): Record<string, unknown> | null {
     if (!data) return null;
 
     const sanitized = { ...data };

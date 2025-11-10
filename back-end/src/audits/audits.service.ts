@@ -8,8 +8,8 @@ export interface CreateAuditDto {
   tableName: string;
   action: AuditAction;
   recordId?: string;
-  previousData?: any;
-  newData?: any;
+  previousData?: Record<string, unknown>;
+  newData?: Record<string, unknown>;
   ipAddress?: string;
   userAgent?: string;
 }
@@ -75,7 +75,7 @@ export class AuditsService {
     userId: string,
     tableName: string,
     recordId: string,
-    newData: any,
+    newData: Record<string, unknown>,
     ipAddress?: string,
     userAgent?: string
   ): Promise<Audit> {
@@ -117,8 +117,8 @@ export class AuditsService {
     userId: string,
     tableName: string,
     recordId: string,
-    previousData: any,
-    newData: any,
+    previousData: Record<string, unknown>,
+    newData: Record<string, unknown>,
     ipAddress?: string,
     userAgent?: string
   ): Promise<Audit> {
@@ -141,7 +141,7 @@ export class AuditsService {
     userId: string,
     tableName: string,
     recordId: string,
-    previousData: any,
+    previousData: Record<string, unknown>,
     ipAddress?: string,
     userAgent?: string
   ): Promise<Audit> {

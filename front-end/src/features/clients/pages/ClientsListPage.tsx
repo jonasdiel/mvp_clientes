@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -57,7 +57,13 @@ export function ClientsListPage() {
       const params: QueryClientsParams = {
         page,
         limit,
-        orderBy: orderBy as any,
+        orderBy:
+          orderBy as
+            | 'name'
+            | 'salary'
+            | 'companyValue'
+            | 'createdAt'
+            | 'viewCount',
         order,
         ...(search && { search }),
       };
@@ -65,7 +71,7 @@ export function ClientsListPage() {
       setClients(response.data);
       setTotal(response.total);
       setTotalPages(response.totalPages);
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message =
         error.response?.data?.message || 'Erro ao carregar clientes';
       toast.error(message);
@@ -107,7 +113,7 @@ export function ClientsListPage() {
       toast.success('Cliente excluído com sucesso!');
       setDeletingClient(null);
       loadClients();
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message =
         error.response?.data?.message || 'Erro ao excluir cliente';
       toast.error(message);

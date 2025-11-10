@@ -50,7 +50,7 @@ export class ClientsService {
           userId,
           'clients',
           savedClient.id,
-          savedClient,
+          savedClient as unknown as Record<string, unknown>,
           ipAddress,
           userAgent
         );
@@ -220,7 +220,7 @@ export class ClientsService {
           'clients',
           id,
           previousData,
-          updatedClient,
+          updatedClient as unknown as Record<string, unknown>,
           ipAddress,
           userAgent
         );
