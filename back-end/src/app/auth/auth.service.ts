@@ -7,16 +7,18 @@ import { User } from '../entities/user.entity';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto, UserResponseDto } from './dto/auth-response.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
+import { AuditsService } from '../../audits/audits.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private auditsService: AuditsService,
   ) {}
 
-  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+  async login(loginDto: LoginDto, ipAddress?: string, userAgent?: string): Promise<AuthResponseDto> {
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -46,6 +48,13 @@ export class AuthService {
       email: user.email,
       name: user.name,
     };
+
+    // Registra o login na auditoria
+    try {
+      await this.auditsService.logLogin(user.id, ipAddress, userAgent);
+    } catch (error) {
+      console.error('Error logging login audit:', error);
+    }
 
     return {
       access_token,

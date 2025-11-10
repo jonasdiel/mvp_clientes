@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { User } from '../app/entities/user.entity';
 import { Client } from '../app/clients/entities/client.entity';
+import { Audit } from '../audits/entities/audit.entity';
 
 export const databaseConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -9,7 +10,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: process.env.DATABASE_USER || 'postgres',
   password: process.env.DATABASE_PASSWORD || 'postgres',
   database: process.env.DATABASE_NAME || 'mvp_clientes',
-  entities: [User, Client],
+  entities: [User, Client, Audit],
   synchronize: process.env.NODE_ENV === 'development',
   logging: process.env.NODE_ENV === 'development',
   migrations: ['back-end/migrations/**/*{.ts,.js}'],

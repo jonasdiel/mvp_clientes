@@ -10,6 +10,8 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Req,
+  Ip,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,6 +20,7 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -49,8 +52,14 @@ export class ClientsController {
     status: 401,
     description: 'Não autorizado',
   })
-  create(@Body() createClientDto: CreateClientDto): Promise<Client> {
-    return this.clientsService.create(createClientDto);
+  create(
+    @Body() createClientDto: CreateClientDto,
+    @Req() req: Request,
+    @Ip() ip: string,
+  ): Promise<Client> {
+    const userId = (req as any).user?.id;
+    const userAgent = req.headers['user-agent'];
+    return this.clientsService.create(createClientDto, userId, ip, userAgent);
   }
 
   @Get()
@@ -119,8 +128,14 @@ export class ClientsController {
     status: 401,
     description: 'Não autorizado',
   })
-  recordView(@Param('id') id: string): Promise<Client> {
-    return this.clientsService.findOne(id, true);
+  recordView(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Ip() ip: string,
+  ): Promise<Client> {
+    const userId = (req as any).user?.id;
+    const userAgent = req.headers['user-agent'];
+    return this.clientsService.findOne(id, true, userId, ip, userAgent);
   }
 
   @Put(':id')
@@ -150,8 +165,12 @@ export class ClientsController {
   update(
     @Param('id') id: string,
     @Body() updateClientDto: UpdateClientDto,
+    @Req() req: Request,
+    @Ip() ip: string,
   ): Promise<Client> {
-    return this.clientsService.update(id, updateClientDto);
+    const userId = (req as any).user?.id;
+    const userAgent = req.headers['user-agent'];
+    return this.clientsService.update(id, updateClientDto, userId, ip, userAgent);
   }
 
   @Delete(':id')
@@ -186,7 +205,13 @@ export class ClientsController {
     status: 401,
     description: 'Não autorizado',
   })
-  remove(@Param('id') id: string): Promise<{ deleted: boolean }> {
-    return this.clientsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Ip() ip: string,
+  ): Promise<{ deleted: boolean }> {
+    const userId = (req as any).user?.id;
+    const userAgent = req.headers['user-agent'];
+    return this.clientsService.remove(id, userId, ip, userAgent);
   }
 }

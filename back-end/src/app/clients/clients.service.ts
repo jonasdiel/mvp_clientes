@@ -11,6 +11,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { QueryClientsDto } from './dto/query-clients.dto';
 import { ClientResponseDto } from './dto/client-response.dto';
+import { AuditsService } from '../../audits/audits.service';
 
 @Injectable()
 export class ClientsService {
@@ -19,9 +20,15 @@ export class ClientsService {
   constructor(
     @InjectRepository(Client)
     private readonly clientRepository: Repository<Client>,
+    private readonly auditsService: AuditsService,
   ) {}
 
-  async create(createClientDto: CreateClientDto): Promise<Client> {
+  async create(
+    createClientDto: CreateClientDto,
+    userId?: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Client> {
     try {
       const client = this.clientRepository.create(createClientDto);
       const savedClient = await this.clientRepository.save(client);
@@ -31,6 +38,20 @@ export class ClientsService {
         clientId: savedClient.id,
         name: savedClient.name,
       });
+
+      // Registra auditoria
+      try {
+        await this.auditsService.logCreate(
+          userId,
+          'clients',
+          savedClient.id,
+          savedClient,
+          ipAddress,
+          userAgent,
+        );
+      } catch (auditError) {
+        this.logger.error('Error logging create audit:', auditError);
+      }
 
       return savedClient;
     } catch (error) {
@@ -89,7 +110,13 @@ export class ClientsService {
     }
   }
 
-  async findOne(id: string, incrementView: boolean = false): Promise<Client> {
+  async findOne(
+    id: string,
+    incrementView: boolean = false,
+    userId?: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Client> {
     try {
       const client = await this.clientRepository.findOne({
         where: { id },
@@ -113,6 +140,19 @@ export class ClientsService {
           clientId: id,
           viewCount: client.viewCount,
         });
+
+        // Registra auditoria de leitura
+        try {
+          await this.auditsService.logRead(
+            userId,
+            'clients',
+            id,
+            ipAddress,
+            userAgent,
+          );
+        } catch (auditError) {
+          this.logger.error('Error logging read audit:', auditError);
+        }
       }
 
       return client;
@@ -131,7 +171,13 @@ export class ClientsService {
     }
   }
 
-  async update(id: string, updateClientDto: UpdateClientDto): Promise<Client> {
+  async update(
+    id: string,
+    updateClientDto: UpdateClientDto,
+    userId?: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Client> {
     try {
       const client = await this.clientRepository.findOne({
         where: { id },
@@ -145,6 +191,9 @@ export class ClientsService {
         throw new NotFoundException('Cliente não encontrado');
       }
 
+      // Salva dados anteriores para auditoria
+      const previousData = { ...client };
+
       Object.assign(client, updateClientDto);
       const updatedClient = await this.clientRepository.save(client);
 
@@ -152,6 +201,21 @@ export class ClientsService {
         message: 'Client updated',
         clientId: id,
       });
+
+      // Registra auditoria
+      try {
+        await this.auditsService.logUpdate(
+          userId,
+          'clients',
+          id,
+          previousData,
+          updatedClient,
+          ipAddress,
+          userAgent,
+        );
+      } catch (auditError) {
+        this.logger.error('Error logging update audit:', auditError);
+      }
 
       return updatedClient;
     } catch (error) {
@@ -169,7 +233,12 @@ export class ClientsService {
     }
   }
 
-  async remove(id: string): Promise<{ deleted: boolean }> {
+  async remove(
+    id: string,
+    userId?: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<{ deleted: boolean }> {
     try {
       const client = await this.clientRepository.findOne({
         where: { id },
@@ -183,6 +252,9 @@ export class ClientsService {
         throw new NotFoundException('Cliente não encontrado');
       }
 
+      // Salva dados anteriores para auditoria
+      const previousData = { ...client };
+
       // Soft delete
       await this.clientRepository.softDelete(id);
 
@@ -190,6 +262,20 @@ export class ClientsService {
         message: 'Client soft deleted',
         clientId: id,
       });
+
+      // Registra auditoria
+      try {
+        await this.auditsService.logDelete(
+          userId,
+          'clients',
+          id,
+          previousData,
+          ipAddress,
+          userAgent,
+        );
+      } catch (auditError) {
+        this.logger.error('Error logging delete audit:', auditError);
+      }
 
       return { deleted: true };
     } catch (error) {
