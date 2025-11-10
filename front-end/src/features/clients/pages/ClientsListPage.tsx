@@ -57,13 +57,12 @@ export function ClientsListPage() {
       const params: QueryClientsParams = {
         page,
         limit,
-        orderBy:
-          orderBy as
-            | 'name'
-            | 'salary'
-            | 'companyValue'
-            | 'createdAt'
-            | 'viewCount',
+        orderBy: orderBy as
+          | 'name'
+          | 'salary'
+          | 'companyValue'
+          | 'createdAt'
+          | 'viewCount',
         order,
         ...(search && { search }),
       };
