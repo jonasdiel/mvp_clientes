@@ -12,6 +12,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { QueryClientsDto } from './dto/query-clients.dto';
 import { ClientResponseDto } from './dto/client-response.dto';
 import { AuditsService } from '../../audits/audits.service';
+import { MetricsService } from '../metrics/metrics.service';
 
 @Injectable()
 export class ClientsService {
@@ -21,6 +22,7 @@ export class ClientsService {
     @InjectRepository(Client)
     private readonly clientRepository: Repository<Client>,
     private readonly auditsService: AuditsService,
+    private readonly metricsService: MetricsService,
   ) {}
 
   async create(
@@ -38,6 +40,9 @@ export class ClientsService {
         clientId: savedClient.id,
         name: savedClient.name,
       });
+
+      // Incrementa métrica de clientes criados
+      this.metricsService.incrementClientsCreated();
 
       // Registra auditoria
       try {
@@ -262,6 +267,9 @@ export class ClientsService {
         message: 'Client soft deleted',
         clientId: id,
       });
+
+      // Incrementa métrica de clientes deletados
+      this.metricsService.incrementClientsDeleted();
 
       // Registra auditoria
       try {
