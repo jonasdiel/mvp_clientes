@@ -9,18 +9,18 @@ import {
 describe('Currency Utils', () => {
   describe('centsToReal', () => {
     it('should convert cents to BRL currency format', () => {
-      expect(centsToReal(500000)).toBe('R$ 5.000,00');
-      expect(centsToReal(10000000)).toBe('R$ 100.000,00');
-      expect(centsToReal(0)).toBe('R$ 0,00');
-      expect(centsToReal(99)).toBe('R$ 0,99');
+      expect(centsToReal(500000)).toBe('R$\u00A05.000,00'); // \u00A0 is non-breaking space
+      expect(centsToReal(10000000)).toBe('R$\u00A0100.000,00');
+      expect(centsToReal(0)).toBe('R$\u00A00,00');
+      expect(centsToReal(99)).toBe('R$\u00A00,99');
     });
 
     it('should handle negative values', () => {
-      expect(centsToReal(-500000)).toBe('-R$ 5.000,00');
+      expect(centsToReal(-500000)).toBe('-R$\u00A05.000,00');
     });
 
     it('should handle large numbers', () => {
-      expect(centsToReal(123456789)).toBe('R$ 1.234.567,89');
+      expect(centsToReal(123456789)).toBe('R$\u00A01.234.567,89');
     });
   });
 

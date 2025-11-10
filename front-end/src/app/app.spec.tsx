@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './app';
@@ -13,14 +13,14 @@ describe('App', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
-    const { getAllByText } = render(
+  it('should redirect to login page by default', () => {
+    render(
       <BrowserRouter>
         <App />
       </BrowserRouter>
     );
-    expect(
-      getAllByText(new RegExp('Welcome front-end', 'gi')).length > 0
-    ).toBeTruthy();
+    // The login page should be rendered - look for the login button and email field
+    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/seu@email.com/i)).toBeInTheDocument();
   });
 });

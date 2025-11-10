@@ -1,5 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ClientForm } from './ClientForm';
 import { Client } from '@/shared/types/client.types';
 
@@ -102,32 +103,56 @@ describe('ClientForm', () => {
   it('should validate negative salary', async () => {
     render(<ClientForm onSubmit={mockOnSubmit} />);
 
+    // Fill in required name field
+    const nameInput = screen.getByLabelText(/nome/i);
+    fireEvent.change(nameInput, { target: { value: 'Test Client' } });
+
     const salaryInput = screen.getByLabelText(/salário/i);
+    const companyValueInput = screen.getByLabelText(/valor da empresa/i);
+
+    // Set a negative salary - need to directly change the value
     fireEvent.change(salaryInput, { target: { value: '-100' } });
+    // Set a valid company value
+    fireEvent.change(companyValueInput, { target: { value: '1000' } });
 
     const submitButton = screen.getByRole('button', { name: /salvar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
+      // Check that the error message appears
       expect(
         screen.getByText(/o salário deve ser maior ou igual a zero/i)
       ).toBeInTheDocument();
+      // And that the submit was not called
+      expect(mockOnSubmit).not.toHaveBeenCalled();
     });
   });
 
   it('should validate negative company value', async () => {
     render(<ClientForm onSubmit={mockOnSubmit} />);
 
+    // Fill in required name field
+    const nameInput = screen.getByLabelText(/nome/i);
+    fireEvent.change(nameInput, { target: { value: 'Test Client' } });
+
+    const salaryInput = screen.getByLabelText(/salário/i);
     const companyValueInput = screen.getByLabelText(/valor da empresa/i);
+
+    // Set a valid salary
+    fireEvent.change(salaryInput, { target: { value: '1000' } });
+    // Set a negative company value - need to directly change the value
     fireEvent.change(companyValueInput, { target: { value: '-500' } });
 
     const submitButton = screen.getByRole('button', { name: /salvar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
+      // Check that the error message appears
       expect(
         screen.getByText(/o valor da empresa deve ser maior ou igual a zero/i)
       ).toBeInTheDocument();
+      // And that the submit was not called
+      expect(mockOnSubmit).not.toHaveBeenCalled();
     });
   });
 });
