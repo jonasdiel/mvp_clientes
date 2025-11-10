@@ -1,6 +1,9 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { LoginPage } from '../features/auth/pages/LoginPage';
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
+import { ClientsListPage } from '../features/clients/pages/ClientsListPage';
+import { ClientDetailPage } from '../features/clients/pages/ClientDetailPage';
 import { authService } from '../features/auth/services/auth.service';
 
 // Componente para proteger rotas autenticadas
@@ -27,33 +30,54 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
 export function App() {
   return (
-    <Routes>
-      {/* Rota raiz redireciona para login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+    <>
+      <Toaster position="top-right" richColors />
+      <Routes>
+        {/* Rota raiz redireciona para login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Rota de login */}
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        }
-      />
+        {/* Rota de login */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
 
-      {/* Rota de dashboard protegida */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
+        {/* Rota de dashboard protegida */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Rota 404 */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+        {/* Rotas de clientes protegidas */}
+        <Route
+          path="/clients"
+          element={
+            <ProtectedRoute>
+              <ClientsListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clients/:id"
+          element={
+            <ProtectedRoute>
+              <ClientDetailPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Rota 404 */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </>
   );
 }
 

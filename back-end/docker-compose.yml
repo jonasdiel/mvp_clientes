@@ -6,7 +6,7 @@ services:
     container_name: mvp-clientes-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${DATABASE_NAME:-mvp_clients}
+      POSTGRES_DB: ${DATABASE_NAME:-mvp_clientes}
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
     ports:
@@ -32,7 +32,7 @@ services:
       PORT: ${PORT:-3000}
       DATABASE_HOST: postgres
       DATABASE_PORT: 5432
-      DATABASE_NAME: ${DATABASE_NAME:-mvp_clients}
+      DATABASE_NAME: ${DATABASE_NAME:-mvp_clientes}
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
       JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}

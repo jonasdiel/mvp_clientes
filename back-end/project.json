@@ -80,6 +80,30 @@
       "options": {
         "lintFilePatterns": ["back-end/**/*.ts"]
       }
+    },
+    "migration:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typeorm migration:run -- -d back-end/src/config/typeorm.config.ts"
+      }
+    },
+    "migration:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typeorm migration:generate -- back-end/src/migrations/Migration -d back-end/src/config/typeorm.config.ts"
+      }
+    },
+    "migration:revert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typeorm migration:revert -- -d back-end/src/config/typeorm.config.ts"
+      }
+    },
+    "migration:show": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typeorm migration:show -- -d back-end/src/config/typeorm.config.ts"
+      }
     }
   },
   "tags": []

@@ -197,29 +197,29 @@
 ## 📡 Endpoints da API (Back-End)
 
 ### Autenticação
-- `POST /auth/login`
+- `POST /api/auth/login`
   - Body: `{ email: string, password: string }`
   - Response: `{ access_token: string, user: {...} }`
 
 ### Clientes (Todos protegidos com JWT)
-- `POST /clients`
+- `POST /api/clients`
   - Body: `CreateClientDto`
   - Response: `Client`
-- `GET /clients`
+- `GET /api/clients`
   - Query: `?page=1&limit=10&search=&orderBy=createdAt&order=DESC`
   - Response: `{ data: Client[], total: number, page: number, limit: number }`
-- `GET /clients/:id`
+- `GET /api/clients/:id`
   - Response: `Client` (incrementa contador de views)
-- `PUT /clients/:id`
+- `PUT /api/clients/:id`
   - Body: `UpdateClientDto`
   - Response: `Client`
-- `DELETE /clients/:id`
+- `DELETE /api/clients/:id`
   - Response: `{ deleted: boolean }` (soft delete)
 
 ### Sistema
-- `GET /healthz`
+- `GET /api/healthz`
   - Response: `{ status: 'ok', database: 'ok', timestamp: ISO }`
-- `GET /metrics`
+- `GET /api/metrics`
   - Response: Prometheus format (text/plain)
 - `GET /docs`
   - Swagger UI
@@ -331,7 +331,7 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_DB: mvp_clients
+      POSTGRES_DB: mvp_clientes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports: ["5432:5432"]
@@ -357,7 +357,7 @@ DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
-DATABASE_NAME=mvp_clients
+DATABASE_NAME=mvp_clientes
 JWT_SECRET=your-secret-key-change-in-production
 JWT_EXPIRES_IN=24h
 ```
@@ -455,10 +455,16 @@ nx lint front-end
 nx run-many --target=test --all
 
 # Gerar migration (backend)
-nx run back-end:typeorm migration:generate -- -n MigrationName
+nx migration:generate back-end
 
 # Rodar migrations
-nx run back-end:typeorm migration:run
+nx migration:run back-end
+
+# Reverter última migration
+nx migration:revert back-end
+
+# Mostrar status das migrations
+nx migration:show back-end
 ```
 
 ### Docker
