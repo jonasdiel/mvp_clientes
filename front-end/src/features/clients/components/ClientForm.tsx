@@ -87,7 +87,8 @@ export function ClientForm({
                   {...field}
                   value={field.value ?? 0}
                   onChange={(e) => {
-                    const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
+                    const value =
+                      e.target.value === '' ? 0 : parseFloat(e.target.value);
                     field.onChange(isNaN(value) ? 0 : value);
                   }}
                   disabled={isLoading}
@@ -112,7 +113,8 @@ export function ClientForm({
                   {...field}
                   value={field.value ?? 0}
                   onChange={(e) => {
-                    const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
+                    const value =
+                      e.target.value === '' ? 0 : parseFloat(e.target.value);
                     field.onChange(isNaN(value) ? 0 : value);
                   }}
                   disabled={isLoading}
