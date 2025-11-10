@@ -33,7 +33,8 @@ export function ClientDetailPage() {
 
     try {
       setIsLoading(true);
-      const data = await clientsService.getClientById(id);
+      // Usa recordView para incrementar o contador de visualizações
+      const data = await clientsService.recordView(id);
       setClient(data);
     } catch (error: any) {
       const message = error.response?.data?.message || 'Erro ao carregar cliente';

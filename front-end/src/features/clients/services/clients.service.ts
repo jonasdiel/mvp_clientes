@@ -17,10 +17,18 @@ export const clientsService = {
   },
 
   /**
-   * Busca um cliente por ID (incrementa contador de visualizações)
+   * Busca um cliente por ID (sem incrementar visualizações)
    */
   async getClientById(id: string): Promise<Client> {
     const response = await api.get<Client>(`/api/clients/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Registra visualização do cliente (incrementa contador)
+   */
+  async recordView(id: string): Promise<Client> {
+    const response = await api.post<Client>(`/api/clients/${id}/view`);
     return response.data;
   },
 
