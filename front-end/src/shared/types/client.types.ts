@@ -33,6 +33,12 @@ export interface QueryClientsParams {
   page?: number;
   limit?: number;
   search?: string;
-  orderBy?: 'name' | 'salary' | 'companyValue' | 'viewCount' | 'createdAt' | 'updatedAt';
+  orderBy?:
+    | 'name'
+    | 'salary'
+    | 'companyValue'
+    | 'viewCount'
+    | 'createdAt'
+    | 'updatedAt';
   order?: 'ASC' | 'DESC';
 }

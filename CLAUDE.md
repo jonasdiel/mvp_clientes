@@ -3,12 +3,14 @@
 ## 📋 Stack Técnica Completa
 
 ### Monorepo
+
 - **Nx.dev** (obrigatório)
   - Workspace com apps separados (front-end, back-end)
   - Pipelines independentes para build e testes
   - Comandos: `nx serve`, `nx build`, `nx test`
 
 ### Back-End
+
 - **NestJS** (framework)
   - Arquitetura modular
   - Decorators e dependency injection
@@ -44,6 +46,7 @@
   - .env.example
 
 ### Front-End
+
 - **React 18+**
 - **Vite** (build tool)
 - **TypeScript** (strict mode)
@@ -62,6 +65,7 @@
   - Nginx para servir build de produção
 
 ### DevOps & Qualidade
+
 - **ESLint**
   - Configuração compartilhada no monorepo
   - Rules para TS, React, NestJS
@@ -82,6 +86,7 @@
   - Cache de sessões ou dados
 
 ### Observabilidade (Diferencial)
+
 - **OpenTelemetry** ou **AWS X-Ray**
   - Distributed tracing
   - Spans e traces
@@ -197,11 +202,13 @@
 ## 📡 Endpoints da API (Back-End)
 
 ### Autenticação
+
 - `POST /api/auth/login`
   - Body: `{ email: string, password: string }`
   - Response: `{ access_token: string, user: {...} }`
 
 ### Clientes (Todos protegidos com JWT)
+
 - `POST /api/clients`
   - Body: `CreateClientDto`
   - Response: `Client`
@@ -217,6 +224,7 @@
   - Response: `{ deleted: boolean }` (soft delete)
 
 ### Sistema
+
 - `GET /api/healthz`
   - Response: `{ status: 'ok', database: 'ok', timestamp: ISO }`
 - `GET /api/metrics`
@@ -227,18 +235,20 @@
 ## 🗄️ Modelo de Dados
 
 ### User (para autenticação)
+
 ```typescript
 {
-  id: UUID
-  email: string (unique)
-  password: string (hashed)
-  name: string
-  createdAt: DateTime
-  updatedAt: DateTime
+  id: UUID;
+  email: string(unique);
+  password: string(hashed);
+  name: string;
+  createdAt: DateTime;
+  updatedAt: DateTime;
 }
 ```
 
 ### Client
+
 ```typescript
 {
   id: UUID
@@ -257,12 +267,14 @@
 ## 🎨 Fluxos de Tela (Front-End)
 
 ### 1. Login (`/login`)
+
 - Formulário: email + senha
 - Validação client-side
 - Armazena token JWT (localStorage/sessionStorage)
 - Redirect para `/dashboard`
 
 ### 2. Dashboard (`/dashboard`)
+
 - Cards com totais:
   - Total de clientes
   - Clientes criados hoje
@@ -272,6 +284,7 @@
 - Menu de navegação
 
 ### 3. Lista de Clientes (`/clients`)
+
 - Tabela com: nome, email, telefone, data de criação
 - Paginação
 - Busca por nome/email
@@ -279,16 +292,19 @@
 - Ordenação por colunas
 
 ### 4. Criar Cliente (`/clients/new`)
+
 - Formulário: nome, email, telefone, CPF, endereço
 - Validação (email válido, CPF válido)
 - Máscara para telefone e CPF
 - Botões: Salvar, Cancelar
 
 ### 5. Editar Cliente (`/clients/:id/edit`)
+
 - Mesmo formulário do criar, pré-preenchido
 - Botões: Salvar, Cancelar
 
 ### 6. Detalhes do Cliente (`/clients/:id`)
+
 - Exibe todos os dados do cliente
 - Mostra contador de visualizações
 - Botões: Editar, Excluir, Voltar
@@ -296,6 +312,7 @@
 ## ✅ Testes
 
 ### Back-End (Jest)
+
 - **Unitários**:
   - Services: `clients.service.spec.ts`, `auth.service.spec.ts`
   - Controllers: testes de rotas
@@ -306,6 +323,7 @@
   - Banco de dados de teste
 
 ### Front-End (Vitest + Testing Library)
+
 - **Unitários**:
   - Componentes: renderização, props, eventos
   - Hooks customizados
@@ -320,11 +338,12 @@
 ## 🐳 Docker
 
 ### Back-End docker-compose.yml
+
 ```yaml
 services:
   api:
     build: .
-    ports: ["3000:3000"]
+    ports: ['3000:3000']
     env_file: .env
     depends_on: [db]
 
@@ -334,22 +353,24 @@ services:
       POSTGRES_DB: mvp_clientes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports: ["5432:5432"]
+    ports: ['5432:5432']
     volumes: [postgres_data:/var/lib/postgresql/data]
 ```
 
 ### Front-End docker-compose.yml
+
 ```yaml
 services:
   web:
     build: .
-    ports: ["5173:80"]
+    ports: ['5173:80']
     env_file: .env
 ```
 
 ## 🔐 Variáveis de Ambiente
 
 ### Back-End (.env.example)
+
 ```
 NODE_ENV=development
 PORT=3000
@@ -363,6 +384,7 @@ JWT_EXPIRES_IN=24h
 ```
 
 ### Front-End (.env.example)
+
 ```
 VITE_API_URL=http://localhost:3000
 ```
@@ -370,6 +392,7 @@ VITE_API_URL=http://localhost:3000
 ## 📊 Observabilidade - Implementação
 
 ### Logs Estruturados (JSON)
+
 ```json
 {
   "level": "info",
@@ -382,6 +405,7 @@ VITE_API_URL=http://localhost:3000
 ```
 
 ### Métricas Prometheus
+
 - `http_requests_total{method, route, status}`
 - `http_request_duration_seconds{method, route}`
 - `clients_total`
@@ -389,6 +413,7 @@ VITE_API_URL=http://localhost:3000
 - `clients_deleted_total`
 
 ### Healthcheck Response
+
 ```json
 {
   "status": "ok",
@@ -403,6 +428,7 @@ VITE_API_URL=http://localhost:3000
 ## 🚀 CI/CD - GitHub Actions
 
 ### Backend Workflow
+
 ```yaml
 - name: Install dependencies
 - name: Lint
@@ -412,6 +438,7 @@ VITE_API_URL=http://localhost:3000
 ```
 
 ### Frontend Workflow
+
 ```yaml
 - name: Install dependencies
 - name: Lint
@@ -423,6 +450,7 @@ VITE_API_URL=http://localhost:3000
 ## 🎯 Checklist de Comandos Nx
 
 ### Desenvolvimento
+
 ```bash
 # Instalar dependências
 npm install
@@ -468,6 +496,7 @@ nx migration:show back-end
 ```
 
 ### Docker
+
 ```bash
 # Backend + DB
 cd apps/back-end

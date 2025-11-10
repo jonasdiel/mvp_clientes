@@ -13,7 +13,7 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private db: TypeOrmHealthIndicator,
-    private memory: MemoryHealthIndicator,
+    private memory: MemoryHealthIndicator
   ) {}
 
   @Get()

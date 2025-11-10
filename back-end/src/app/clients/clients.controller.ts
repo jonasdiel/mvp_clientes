@@ -55,7 +55,7 @@ export class ClientsController {
   create(
     @Body() createClientDto: CreateClientDto,
     @Req() req: Request,
-    @Ip() ip: string,
+    @Ip() ip: string
   ): Promise<Client> {
     const userId = (req as any).user?.id;
     const userAgent = req.headers['user-agent'];
@@ -131,7 +131,7 @@ export class ClientsController {
   recordView(
     @Param('id') id: string,
     @Req() req: Request,
-    @Ip() ip: string,
+    @Ip() ip: string
   ): Promise<Client> {
     const userId = (req as any).user?.id;
     const userAgent = req.headers['user-agent'];
@@ -166,11 +166,17 @@ export class ClientsController {
     @Param('id') id: string,
     @Body() updateClientDto: UpdateClientDto,
     @Req() req: Request,
-    @Ip() ip: string,
+    @Ip() ip: string
   ): Promise<Client> {
     const userId = (req as any).user?.id;
     const userAgent = req.headers['user-agent'];
-    return this.clientsService.update(id, updateClientDto, userId, ip, userAgent);
+    return this.clientsService.update(
+      id,
+      updateClientDto,
+      userId,
+      ip,
+      userAgent
+    );
   }
 
   @Delete(':id')
@@ -208,7 +214,7 @@ export class ClientsController {
   remove(
     @Param('id') id: string,
     @Req() req: Request,
-    @Ip() ip: string,
+    @Ip() ip: string
   ): Promise<{ deleted: boolean }> {
     const userId = (req as any).user?.id;
     const userAgent = req.headers['user-agent'];

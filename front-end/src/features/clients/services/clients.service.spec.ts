@@ -1,7 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { clientsService } from './clients.service';
 import api from '@/shared/services/api';
-import { Client, CreateClientDto, UpdateClientDto } from '@/shared/types/client.types';
+import {
+  Client,
+  CreateClientDto,
+  UpdateClientDto,
+} from '@/shared/types/client.types';
 
 vi.mock('@/shared/services/api');
 

@@ -15,10 +15,14 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-    private auditsService: AuditsService,
+    private auditsService: AuditsService
   ) {}
 
-  async login(loginDto: LoginDto, ipAddress?: string, userAgent?: string): Promise<AuthResponseDto> {
+  async login(
+    loginDto: LoginDto,
+    ipAddress?: string,
+    userAgent?: string
+  ): Promise<AuthResponseDto> {
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -66,7 +70,11 @@ export class AuthService {
     return this.userRepository.findOne({ where: { id: userId } });
   }
 
-  async createUser(email: string, password: string, name: string): Promise<User> {
+  async createUser(
+    email: string,
+    password: string,
+    name: string
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({
       email,

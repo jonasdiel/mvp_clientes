@@ -76,8 +76,15 @@ export class MetricsService {
     this.clientsTotal.inc(count);
   }
 
-  recordHttpRequest(method: string, route: string, status: number, duration: number) {
+  recordHttpRequest(
+    method: string,
+    route: string,
+    status: number,
+    duration: number
+  ) {
     this.httpRequestsTotal.labels(method, route, status.toString()).inc();
-    this.httpRequestDuration.labels(method, route, status.toString()).observe(duration);
+    this.httpRequestDuration
+      .labels(method, route, status.toString())
+      .observe(duration);
   }
 }

@@ -86,7 +86,9 @@ export function ClientForm({
                   min="0"
                   placeholder="0.00"
                   {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    field.onChange(parseFloat(e.target.value) || 0)
+                  }
                   disabled={isLoading}
                 />
               </FormControl>
@@ -108,7 +110,9 @@ export function ClientForm({
                   min="0"
                   placeholder="0.00"
                   {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    field.onChange(parseFloat(e.target.value) || 0)
+                  }
                   disabled={isLoading}
                 />
               </FormControl>

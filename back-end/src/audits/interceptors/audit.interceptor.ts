@@ -15,13 +15,13 @@ import { AuditAction } from '../entities/audit.entity';
 export class AuditInterceptor implements NestInterceptor {
   constructor(
     private reflector: Reflector,
-    private auditsService: AuditsService,
+    private auditsService: AuditsService
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const auditMetadata = this.reflector.get<AuditMetadata>(
       AUDIT_KEY,
-      context.getHandler(),
+      context.getHandler()
     );
 
     if (!auditMetadata) {
@@ -80,7 +80,7 @@ export class AuditInterceptor implements NestInterceptor {
           // Log error but don't fail the request
           console.error('Error logging audit:', error);
         }
-      }),
+      })
     );
   }
 

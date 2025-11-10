@@ -31,7 +31,7 @@ export class AuditsService {
 
   constructor(
     @InjectRepository(Audit)
-    private auditsRepository: Repository<Audit>,
+    private auditsRepository: Repository<Audit>
   ) {}
 
   /**
@@ -56,7 +56,7 @@ export class AuditsService {
   async logLogin(
     userId: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Audit> {
     return this.create({
       userId,
@@ -77,7 +77,7 @@ export class AuditsService {
     recordId: string,
     newData: any,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Audit> {
     return this.create({
       userId,
@@ -98,7 +98,7 @@ export class AuditsService {
     tableName: string,
     recordId: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Audit> {
     return this.create({
       userId,
@@ -120,7 +120,7 @@ export class AuditsService {
     previousData: any,
     newData: any,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Audit> {
     return this.create({
       userId,
@@ -143,7 +143,7 @@ export class AuditsService {
     recordId: string,
     previousData: any,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Audit> {
     return this.create({
       userId,
@@ -234,7 +234,7 @@ export class AuditsService {
    */
   async findRecordHistory(
     tableName: string,
-    recordId: string,
+    recordId: string
   ): Promise<Audit[]> {
     return this.auditsRepository.find({
       where: { tableName, recordId },

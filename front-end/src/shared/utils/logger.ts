@@ -7,17 +7,16 @@ export const logger = pino({
   browser: {
     asObject: true,
     serialize: true,
-    transmit:
-      isDevelopment
-        ? undefined
-        : {
-            level: 'error',
-            send: (level, logEvent) => {
-              // Aqui você pode enviar logs para um serviço externo
-              // Por exemplo: Sentry, LogRocket, etc.
-              console.error('Log to external service:', logEvent);
-            },
+    transmit: isDevelopment
+      ? undefined
+      : {
+          level: 'error',
+          send: (level, logEvent) => {
+            // Aqui você pode enviar logs para um serviço externo
+            // Por exemplo: Sentry, LogRocket, etc.
+            console.error('Log to external service:', logEvent);
           },
+        },
   },
   formatters: {
     level: (label) => {
@@ -54,7 +53,10 @@ export const logWarn = (message: string, context?: Record<string, unknown>) => {
   });
 };
 
-export const logDebug = (message: string, context?: Record<string, unknown>) => {
+export const logDebug = (
+  message: string,
+  context?: Record<string, unknown>
+) => {
   logger.debug({
     message,
     ...context,

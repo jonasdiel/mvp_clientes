@@ -30,7 +30,9 @@ export function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Total de Clientes</CardTitle>
-            <CardDescription>Número total de clientes cadastrados</CardDescription>
+            <CardDescription>
+              Número total de clientes cadastrados
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-bold">0</div>

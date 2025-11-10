@@ -1,27 +1,27 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { authService } from "../services/auth.service";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { authService } from '../services/auth.service';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<'div'>) {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -40,21 +40,25 @@ export function LoginForm({
 
       // Redirecionar para o dashboard após 1.5 segundos
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate('/dashboard');
       }, 1500);
     } catch (err: any) {
-      console.error("Login error:", err);
+      console.error('Login error:', err);
       setIsLoading(false);
 
       // Tratar diferentes tipos de erro
       if (err.response?.status === 401) {
-        setError("Email ou senha incorretos");
+        setError('Email ou senha incorretos');
       } else if (err.response?.status === 400) {
-        setError("Dados inválidos. Verifique os campos e tente novamente");
-      } else if (err.code === "ERR_NETWORK") {
-        setError("Erro de conexão. Verifique sua internet ou se o servidor está rodando");
+        setError('Dados inválidos. Verifique os campos e tente novamente');
+      } else if (err.code === 'ERR_NETWORK') {
+        setError(
+          'Erro de conexão. Verifique sua internet ou se o servidor está rodando'
+        );
       } else {
-        setError(err.response?.data?.message || "Erro ao fazer login. Tente novamente");
+        setError(
+          err.response?.data?.message || 'Erro ao fazer login. Tente novamente'
+        );
       }
     }
   };
@@ -63,7 +67,7 @@ export function LoginForm({
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("=== FORM SUBMITTED ===", { email, password: "***" });
+    console.log('=== FORM SUBMITTED ===', { email, password: '***' });
 
     // Limpar estados anteriores
     setError(null);
@@ -71,17 +75,17 @@ export function LoginForm({
 
     // Validação básica (síncrona - não recarrega a página)
     if (!email || !password) {
-      setError("Por favor, preencha todos os campos");
+      setError('Por favor, preencha todos os campos');
       return;
     }
 
-    if (!email.includes("@")) {
-      setError("Por favor, insira um email válido");
+    if (!email.includes('@')) {
+      setError('Por favor, insira um email válido');
       return;
     }
 
     if (password.length < 6) {
-      setError("A senha deve ter pelo menos 6 caracteres");
+      setError('A senha deve ter pelo menos 6 caracteres');
       return;
     }
 
@@ -93,7 +97,7 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -157,12 +161,12 @@ export function LoginForm({
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Entrando..." : "Login"}
+                {isLoading ? 'Entrando...' : 'Login'}
               </Button>
             </div>
 
             <div className="mt-4 text-center text-sm">
-              Não tem uma conta?{" "}
+              Não tem uma conta?{' '}
               <a
                 href="#"
                 className="underline underline-offset-4"

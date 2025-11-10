@@ -52,7 +52,9 @@ export const clientsService = {
    * Remove um cliente (soft delete)
    */
   async deleteClient(id: string): Promise<{ deleted: boolean }> {
-    const response = await api.delete<{ deleted: boolean }>(`/api/clients/${id}`);
+    const response = await api.delete<{ deleted: boolean }>(
+      `/api/clients/${id}`
+    );
     return response.data;
   },
 };

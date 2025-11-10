@@ -138,8 +138,8 @@ A URL da API é configurada via variável de ambiente `VITE_API_URL`:
 const API_URL = import.meta.env.VITE_API_URL;
 
 fetch(`${API_URL}/clientes`)
-  .then(response => response.json())
-  .then(data => console.log(data));
+  .then((response) => response.json())
+  .then((data) => console.log(data));
 ```
 
 ## 🌐 Variáveis de Ambiente
@@ -160,6 +160,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 ## 🐛 Debug
 
 Para debugar no navegador, use o React DevTools:
+
 - [Chrome Extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
 - [Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
 

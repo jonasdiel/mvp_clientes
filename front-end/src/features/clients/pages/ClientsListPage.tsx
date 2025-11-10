@@ -66,7 +66,8 @@ export function ClientsListPage() {
       setTotal(response.total);
       setTotalPages(response.totalPages);
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao carregar clientes';
+      const message =
+        error.response?.data?.message || 'Erro ao carregar clientes';
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -107,7 +108,8 @@ export function ClientsListPage() {
       setDeletingClient(null);
       loadClients();
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao excluir cliente';
+      const message =
+        error.response?.data?.message || 'Erro ao excluir cliente';
       toast.error(message);
     }
   };
@@ -154,7 +156,9 @@ export function ClientsListPage() {
           </div>
 
           <div className="w-48">
-            <label className="text-sm font-medium mb-2 block">Ordenar por</label>
+            <label className="text-sm font-medium mb-2 block">
+              Ordenar por
+            </label>
             <Select value={orderBy} onValueChange={setOrderBy}>
               <SelectTrigger>
                 <SelectValue />
@@ -171,7 +175,10 @@ export function ClientsListPage() {
 
           <div className="w-32">
             <label className="text-sm font-medium mb-2 block">Ordem</label>
-            <Select value={order} onValueChange={(v) => setOrder(v as 'ASC' | 'DESC')}>
+            <Select
+              value={order}
+              onValueChange={(v) => setOrder(v as 'ASC' | 'DESC')}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -250,8 +257,8 @@ export function ClientsListPage() {
             {/* Paginação */}
             <div className="flex items-center justify-between px-4 py-4 border-t">
               <div className="text-sm text-muted-foreground">
-                Mostrando {(page - 1) * limit + 1} a {Math.min(page * limit, total)} de{' '}
-                {total} clientes
+                Mostrando {(page - 1) * limit + 1} a{' '}
+                {Math.min(page * limit, total)} de {total} clientes
               </div>
               <div className="flex gap-2">
                 <Button
@@ -290,18 +297,24 @@ export function ClientsListPage() {
       />
 
       {/* Dialog de Confirmação de Exclusão */}
-      <AlertDialog open={!!deletingClient} onOpenChange={() => setDeletingClient(null)}>
+      <AlertDialog
+        open={!!deletingClient}
+        onOpenChange={() => setDeletingClient(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir o cliente <strong>{deletingClient?.name}</strong>?
-              Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir o cliente{' '}
+              <strong>{deletingClient?.name}</strong>? Esta ação não pode ser
+              desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Excluir</AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete}>
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

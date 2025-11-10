@@ -37,7 +37,8 @@ export function ClientDetailPage() {
       const data = await clientsService.recordView(id);
       setClient(data);
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao carregar cliente';
+      const message =
+        error.response?.data?.message || 'Erro ao carregar cliente';
       toast.error(message);
       navigate('/clients');
     } finally {
@@ -61,7 +62,8 @@ export function ClientDetailPage() {
       toast.success('Cliente excluído com sucesso!');
       navigate('/clients');
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao excluir cliente';
+      const message =
+        error.response?.data?.message || 'Erro ao excluir cliente';
       toast.error(message);
     }
   };
@@ -210,13 +212,15 @@ export function ClientDetailPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir o cliente <strong>{client.name}</strong>?
-              Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir o cliente{' '}
+              <strong>{client.name}</strong>? Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Excluir</AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete}>
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

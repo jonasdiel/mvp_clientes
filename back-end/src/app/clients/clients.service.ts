@@ -22,14 +22,14 @@ export class ClientsService {
     @InjectRepository(Client)
     private readonly clientRepository: Repository<Client>,
     private readonly auditsService: AuditsService,
-    private readonly metricsService: MetricsService,
+    private readonly metricsService: MetricsService
   ) {}
 
   async create(
     createClientDto: CreateClientDto,
     userId?: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Client> {
     try {
       const client = this.clientRepository.create(createClientDto);
@@ -52,7 +52,7 @@ export class ClientsService {
           savedClient.id,
           savedClient,
           ipAddress,
-          userAgent,
+          userAgent
         );
       } catch (auditError) {
         this.logger.error('Error logging create audit:', auditError);
@@ -71,7 +71,13 @@ export class ClientsService {
 
   async findAll(queryDto: QueryClientsDto): Promise<ClientResponseDto> {
     try {
-      const { page = 1, limit = 10, search, orderBy = 'createdAt', order = 'DESC' } = queryDto;
+      const {
+        page = 1,
+        limit = 10,
+        search,
+        orderBy = 'createdAt',
+        order = 'DESC',
+      } = queryDto;
       const skip = (page - 1) * limit;
 
       const queryBuilder = this.clientRepository
@@ -120,7 +126,7 @@ export class ClientsService {
     incrementView: boolean = false,
     userId?: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Client> {
     try {
       const client = await this.clientRepository.findOne({
@@ -153,7 +159,7 @@ export class ClientsService {
             'clients',
             id,
             ipAddress,
-            userAgent,
+            userAgent
           );
         } catch (auditError) {
           this.logger.error('Error logging read audit:', auditError);
@@ -181,7 +187,7 @@ export class ClientsService {
     updateClientDto: UpdateClientDto,
     userId?: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<Client> {
     try {
       const client = await this.clientRepository.findOne({
@@ -216,7 +222,7 @@ export class ClientsService {
           previousData,
           updatedClient,
           ipAddress,
-          userAgent,
+          userAgent
         );
       } catch (auditError) {
         this.logger.error('Error logging update audit:', auditError);
@@ -242,7 +248,7 @@ export class ClientsService {
     id: string,
     userId?: string,
     ipAddress?: string,
-    userAgent?: string,
+    userAgent?: string
   ): Promise<{ deleted: boolean }> {
     try {
       const client = await this.clientRepository.findOne({
@@ -279,7 +285,7 @@ export class ClientsService {
           id,
           previousData,
           ipAddress,
-          userAgent,
+          userAgent
         );
       } catch (auditError) {
         this.logger.error('Error logging delete audit:', auditError);

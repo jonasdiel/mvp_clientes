@@ -6,7 +6,12 @@ import {
   UseGuards,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuditsService, AuditQueryDto } from './audits.service';
 import { Audit, AuditAction } from './entities/audit.entity';
 import { JwtAuthGuard } from '../app/auth/guards/jwt-auth.guard';
@@ -32,7 +37,7 @@ export class AuditsController {
     @Query('action') action?: AuditAction,
     @Query('recordId') recordId?: string,
     @Query('startDate') startDate?: string,
-    @Query('endDate') endDate?: string,
+    @Query('endDate') endDate?: string
   ): Promise<{
     data: Audit[];
     total: number;
@@ -60,9 +65,7 @@ export class AuditsController {
     description: 'Registro de auditoria encontrado',
   })
   @ApiResponse({ status: 404, description: 'Registro não encontrado' })
-  async findOne(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<Audit> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Audit> {
     return this.auditsService.findOne(id);
   }
 
@@ -74,7 +77,7 @@ export class AuditsController {
   })
   async findRecordHistory(
     @Param('tableName') tableName: string,
-    @Param('recordId', ParseUUIDPipe) recordId: string,
+    @Param('recordId', ParseUUIDPipe) recordId: string
   ): Promise<Audit[]> {
     return this.auditsService.findRecordHistory(tableName, recordId);
   }
@@ -87,7 +90,7 @@ export class AuditsController {
   })
   async findByUser(
     @Param('userId', ParseUUIDPipe) userId: string,
-    @Query('limit') limit?: number,
+    @Query('limit') limit?: number
   ): Promise<Audit[]> {
     return this.auditsService.findByUser(userId, limit ? +limit : 50);
   }

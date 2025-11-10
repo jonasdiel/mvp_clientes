@@ -39,12 +39,26 @@ export class QueryClientsDto {
   @ApiPropertyOptional({
     description: 'Campo para ordenação',
     example: 'createdAt',
-    enum: ['name', 'salary', 'companyValue', 'viewCount', 'createdAt', 'updatedAt'],
+    enum: [
+      'name',
+      'salary',
+      'companyValue',
+      'viewCount',
+      'createdAt',
+      'updatedAt',
+    ],
     default: 'createdAt',
   })
   @IsOptional()
   @IsString()
-  @IsIn(['name', 'salary', 'companyValue', 'viewCount', 'createdAt', 'updatedAt'])
+  @IsIn([
+    'name',
+    'salary',
+    'companyValue',
+    'viewCount',
+    'createdAt',
+    'updatedAt',
+  ])
   orderBy?: string = 'createdAt';
 
   @ApiPropertyOptional({

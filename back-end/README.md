@@ -133,4 +133,5 @@ Para debugar a aplicação no VSCode, use a configuração de launch já incluí
 ## 📄 Documentação da API
 
 A documentação Swagger estará disponível em:
+
 - http://localhost:3000/api (quando implementado)

@@ -7,6 +7,7 @@ As migrations do TypeORM estão configuradas para rodar através do Nx com os se
 ### Arquivo de Configuração
 
 O arquivo de configuração do TypeORM DataSource está localizado em:
+
 - `back-end/src/config/typeorm.config.ts`
 
 Este arquivo é usado pelo CLI do TypeORM para executar as migrations.
@@ -91,7 +92,7 @@ export class CreateClientsTable1736446800000 implements MigrationInterface {
           // ... outras colunas
         ],
       }),
-      true,
+      true
     );
   }
 

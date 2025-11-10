@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import {
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { Client } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -82,7 +85,7 @@ describe('ClientsService', () => {
       mockRepository.save.mockRejectedValue(new Error('Database error'));
 
       await expect(service.create(createClientDto)).rejects.toThrow(
-        InternalServerErrorException,
+        InternalServerErrorException
       );
     });
   });
@@ -116,8 +119,13 @@ describe('ClientsService', () => {
         limit: 10,
         totalPages: 1,
       });
-      expect(mockQueryBuilder.where).toHaveBeenCalledWith('client.deletedAt IS NULL');
-      expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('client.createdAt', 'DESC');
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'client.deletedAt IS NULL'
+      );
+      expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+        'client.createdAt',
+        'DESC'
+      );
     });
 
     it('should filter clients by search term', async () => {
@@ -142,9 +150,12 @@ describe('ClientsService', () => {
 
       const result = await service.findAll(queryDto);
 
-      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith('client.name ILIKE :search', {
-        search: '%João%',
-      });
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'client.name ILIKE :search',
+        {
+          search: '%João%',
+        }
+      );
       expect(result.data).toEqual([mockClient]);
     });
 
@@ -160,13 +171,15 @@ describe('ClientsService', () => {
         orderBy: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getManyAndCount: jest.fn().mockRejectedValue(new Error('Database error')),
+        getManyAndCount: jest
+          .fn()
+          .mockRejectedValue(new Error('Database error')),
       };
 
       mockRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
 
       await expect(service.findAll(queryDto)).rejects.toThrow(
-        InternalServerErrorException,
+        InternalServerErrorException
       );
     });
   });
@@ -183,7 +196,9 @@ describe('ClientsService', () => {
       const result = await service.findOne(clientId);
 
       expect(result.viewCount).toBe(6);
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: clientId } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: clientId },
+      });
       expect(mockRepository.save).toHaveBeenCalled();
     });
 
@@ -192,7 +207,9 @@ describe('ClientsService', () => {
 
       mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne(clientId)).rejects.toThrow(NotFoundException);
+      await expect(service.findOne(clientId)).rejects.toThrow(
+        NotFoundException
+      );
     });
 
     it('should throw InternalServerErrorException on database error', async () => {
@@ -202,7 +219,7 @@ describe('ClientsService', () => {
       mockRepository.save.mockRejectedValue(new Error('Database error'));
 
       await expect(service.findOne(clientId)).rejects.toThrow(
-        InternalServerErrorException,
+        InternalServerErrorException
       );
     });
   });
@@ -224,7 +241,9 @@ describe('ClientsService', () => {
 
       expect(result.name).toBe('João Silva Updated');
       expect(result.salary).toBe(600000);
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: clientId } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: clientId },
+      });
       expect(mockRepository.save).toHaveBeenCalled();
     });
 
@@ -235,7 +254,7 @@ describe('ClientsService', () => {
       mockRepository.findOne.mockResolvedValue(null);
 
       await expect(service.update(clientId, updateClientDto)).rejects.toThrow(
-        NotFoundException,
+        NotFoundException
       );
     });
 
@@ -247,7 +266,7 @@ describe('ClientsService', () => {
       mockRepository.save.mockRejectedValue(new Error('Database error'));
 
       await expect(service.update(clientId, updateClientDto)).rejects.toThrow(
-        InternalServerErrorException,
+        InternalServerErrorException
       );
     });
   });
@@ -262,7 +281,9 @@ describe('ClientsService', () => {
       const result = await service.remove(clientId);
 
       expect(result).toEqual({ deleted: true });
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: clientId } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: clientId },
+      });
       expect(mockRepository.softDelete).toHaveBeenCalledWith(clientId);
     });
 
@@ -281,7 +302,7 @@ describe('ClientsService', () => {
       mockRepository.softDelete.mockRejectedValue(new Error('Database error'));
 
       await expect(service.remove(clientId)).rejects.toThrow(
-        InternalServerErrorException,
+        InternalServerErrorException
       );
     });
   });
