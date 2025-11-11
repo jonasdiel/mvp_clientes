@@ -4,19 +4,19 @@ Interface web moderna desenvolvida com React 19, Vite e TypeScript para gerencia
 
 ## 🛠️ Tecnologias
 
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| **React** | 19.0.0 | Biblioteca UI |
-| **Vite** | 7.0.0 | Build tool e dev server |
-| **TypeScript** | 5.9.3 | Superset tipado do JavaScript |
-| **React Router** | 6.29.0 | Roteamento SPA |
-| **React Hook Form** | 7.66.0 | Gerenciamento de formulários |
-| **Zod** | 4.1.12 | Validação de schemas |
-| **Zustand** | 5.0.8 | Gerenciamento de estado |
-| **Axios** | 1.6.0 | Cliente HTTP |
-| **Tailwind CSS** | 3.4.3 | Framework CSS utility-first |
-| **Radix UI** | - | Componentes acessíveis |
-| **Vitest** | 3.0.5 | Framework de testes |
+| Tecnologia          | Versão | Descrição                     |
+| ------------------- | ------ | ----------------------------- |
+| **React**           | 19.0.0 | Biblioteca UI                 |
+| **Vite**            | 7.0.0  | Build tool e dev server       |
+| **TypeScript**      | 5.9.3  | Superset tipado do JavaScript |
+| **React Router**    | 6.29.0 | Roteamento SPA                |
+| **React Hook Form** | 7.66.0 | Gerenciamento de formulários  |
+| **Zod**             | 4.1.12 | Validação de schemas          |
+| **Zustand**         | 5.0.8  | Gerenciamento de estado       |
+| **Axios**           | 1.6.0  | Cliente HTTP                  |
+| **Tailwind CSS**    | 3.4.3  | Framework CSS utility-first   |
+| **Radix UI**        | -      | Componentes acessíveis        |
+| **Vitest**          | 3.0.5  | Framework de testes           |
 
 ## ✨ Funcionalidades
 
@@ -57,11 +57,13 @@ npx nx serve front-end
 ## 🗺️ Rotas
 
 ### Públicas
+
 - `/` - Redireciona para `/login`
 - `/login` - Página de autenticação
   - Usuários autenticados são redirecionados para `/dashboard`
 
 ### Protegidas (JWT)
+
 - `/dashboard` - Dashboard administrativo com métricas e estatísticas
 - `/clients` - Lista de clientes com paginação, busca e filtros
 - `/clients/:id` - Detalhes do cliente (incrementa contador de visualizações)
@@ -136,6 +138,7 @@ front-end/
 ## 🔌 Integração com API
 
 Configurado via Axios em `src/shared/services/api.ts` com:
+
 - Base URL: `VITE_API_URL`
 - Interceptor JWT automático
 - Tratamento de erros
