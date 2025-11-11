@@ -18,10 +18,7 @@ export class AuditInterceptor implements NestInterceptor {
     private auditsService: AuditsService
   ) {}
 
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler
-  ): Observable<unknown> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const auditMetadata = this.reflector.get<AuditMetadata>(
       AUDIT_KEY,
       context.getHandler()
