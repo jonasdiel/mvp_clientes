@@ -125,8 +125,8 @@ export function ClientForm({
           )}
         />
 
-        <div className="flex justify-end gap-2">
-          <Button type="submit" disabled={isLoading}>
+        <div>
+          <Button type="submit" disabled={isLoading} className="w-full">
             {isLoading ? 'Salvando...' : submitLabel}
           </Button>
         </div>
