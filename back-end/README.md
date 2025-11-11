@@ -1,4 +1,4 @@
-# Back-End - MVP Clientes
+# Back-End - MVP Clientes.
 
 API RESTful desenvolvida com NestJS, TypeORM e PostgreSQL para gerenciamento de clientes com autenticação JWT, auditoria completa e observabilidade.
 
