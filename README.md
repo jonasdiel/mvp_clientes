@@ -63,7 +63,7 @@ Visualizar cliente:
 
 ### Arquitetura de Cloud - AWS
 
-Como proposta de arquitetura de implantação na AWS propõe-se abaixo o modelo de implantação, utilizando EKS para orquestração das aplicações e alta disponibilidade.
+Como proposta de arquitetura de implantação na AWS propõe-se abaixo o modelo de implantação, utilizando EKS para orquestração das aplicações, escalabilidade e alta disponibilidade.
 
 ![Cloud](docs/cloud.png)
 
@@ -72,7 +72,8 @@ Elementos principais:
 - Cloudflare: Ponto principal de entrada para DNS, WAF e CDN podendo também ser substituído pelo Route 53, Cloudfront + AWS WAF. A escolha foi devido a facilidade de configuração e custo-benefício.
 - Aplication Load Balancer (ALB): Balanceador de carga gerenciado da AWS para distribuir as requisições com o Ingress Controller que irá distribuir as requisições para o Cluster.
 - Dentro do EKS todas requisições de serão distribuidas para o serviço respectivo (back-end ou front-end) e os pods distribuidos em nós com diferentes zonas da região para alta disponibilidade (no exemplo us-east1-a e us-east1-b). Diferentes regiões podem ser adicionadas também.
-- Todos outros recursos ficam na VPC interna como RDS para o DB e MemoryDB para Redis restringindo a acessos autorizados.
+- HPA será responsável por monitorar as métricas de uso dos pods e escalar o número de réplicas sempre que disponível balanceando entre os nós.
+- Todos outros recursos do projeto ficam na VPC interna como RDS para o DB e MemoryDB para Redis restringindo a acessos autorizados.
 - Prometheus, Grafana e outros recursos podem ser instalados da mesma forma em um node pool específico (MANAGEMENT) restringindo acessos.
 
 ### Visão Geral da Arquitetura da Aplicação
@@ -284,11 +285,11 @@ mvp-clientes/
 
 Antes de iniciar, certifique-se de ter instalado:
 
-- **Node.js**: v20.x ou superior ([Download](https://nodejs.org/))
-- **npm**: v10.x ou superior (incluído com Node.js)
-- **Docker**: v24.x ou superior ([Download](https://www.docker.com/))
-- **Docker Compose**: v2.x ou superior (incluído com Docker Desktop)
-- **Git**: v2.x ou superior ([Download](https://git-scm.com/))
+- **Node.js**: v20.x ou superior
+- **npm**: v10.x ou superior
+- **Docker**: v24.x ou superior
+- **Docker Compose**: v2.x ou superior
+- **Git**: v2.x ou superior
 
 ### Verificar Instalação
 
