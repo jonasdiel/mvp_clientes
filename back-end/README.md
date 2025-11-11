@@ -4,17 +4,17 @@ API RESTful desenvolvida com NestJS, TypeORM e PostgreSQL para gerenciamento de 
 
 ## 🛠️ Tecnologias
 
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| **NestJS** | 11.0.0 | Framework Node.js progressivo |
-| **TypeORM** | 0.3.27 | ORM para TypeScript |
-| **PostgreSQL** | 16 | Banco de dados relacional |
-| **Passport.js** | 10.0.4 | Autenticação |
-| **JWT** | 10.2.0 | JSON Web Tokens |
-| **Pino** | 9.6.0 | Logger estruturado |
-| **Prometheus** | 15.1.3 | Métricas |
-| **Swagger** | 8.0.11 | Documentação API |
-| **Jest** | 29.7.0 | Framework de testes |
+| Tecnologia      | Versão | Descrição                     |
+| --------------- | ------ | ----------------------------- |
+| **NestJS**      | 11.0.0 | Framework Node.js progressivo |
+| **TypeORM**     | 0.3.27 | ORM para TypeScript           |
+| **PostgreSQL**  | 16     | Banco de dados relacional     |
+| **Passport.js** | 10.0.4 | Autenticação                  |
+| **JWT**         | 10.2.0 | JSON Web Tokens               |
+| **Pino**        | 9.6.0  | Logger estruturado            |
+| **Prometheus**  | 15.1.3 | Métricas                      |
+| **Swagger**     | 8.0.11 | Documentação API              |
+| **Jest**        | 29.7.0 | Framework de testes           |
 
 ## ✨ Funcionalidades
 
@@ -47,6 +47,7 @@ docker compose down
 ```
 
 **Acessar**:
+
 - API: http://localhost:3000
 - Docs: http://localhost:3000/docs
 - Health: http://localhost:3000/api/healthz
@@ -76,6 +77,7 @@ npx nx run back-end:migration:show
 ```
 
 **Migrations existentes**:
+
 1. `CreateClientsTable` - Tabela de clientes
 2. `CreateAuditsTable` - Tabela de auditoria
 
@@ -84,19 +86,23 @@ npx nx run back-end:migration:show
 ## 📡 API Endpoints
 
 ### Base URL
+
 ```
 http://localhost:3000/api
 ```
 
 ### Documentação Swagger
+
 ```
 http://localhost:3000/docs
 ```
 
 ### Autenticação
+
 - `POST /api/auth/login` - Login com email/senha
 
 ### Clientes (JWT requerido)
+
 - `POST /api/clients` - Criar cliente
 - `GET /api/clients` - Listar clientes (paginado)
 - `GET /api/clients/:id` - Obter cliente
@@ -104,6 +110,7 @@ http://localhost:3000/docs
 - `DELETE /api/clients/:id` - Excluir cliente (soft delete)
 
 **Query Parameters** (`GET /api/clients`):
+
 - `page` - Página atual (default: 1)
 - `limit` - Itens por página (default: 10)
 - `search` - Busca por nome, email ou CPF
@@ -111,10 +118,12 @@ http://localhost:3000/docs
 - `order` - Direção (ASC|DESC)
 
 ### Sistema
+
 - `GET /api/healthz` - Health check
 - `GET /api/metrics` - Métricas Prometheus
 
 ### Auditoria (JWT requerido)
+
 - `GET /api/audits` - Listar logs de auditoria
 
 ## 🧪 Testes
@@ -166,11 +175,13 @@ back-end/
 ## 📊 Observabilidade
 
 ### Logs (Pino)
+
 Logs estruturados em JSON com dados sensíveis redactados.
 
 **Configuração**: `src/config/logger.config.ts`
 
 ### Métricas (Prometheus)
+
 - `http_requests_total` - Total de requisições
 - `http_request_duration_seconds` - Duração
 - `clients_created_total` - Clientes criados
@@ -179,12 +190,15 @@ Logs estruturados em JSON com dados sensíveis redactados.
 **Endpoint**: http://localhost:3000/api/metrics
 
 ### Health Checks
+
 Monitora Database, Memory Heap e Memory RSS.
 
 **Endpoint**: http://localhost:3000/api/healthz
 
 ### Auditoria
+
 Sistema automático via `AuditInterceptor` que registra:
+
 - Ações: LOGIN, CREATE, READ, UPDATE, DELETE
 - Usuário, IP, User Agent
 - Alterações realizadas
