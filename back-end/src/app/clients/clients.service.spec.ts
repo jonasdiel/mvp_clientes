@@ -9,6 +9,8 @@ import { Client } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { QueryClientsDto } from './dto/query-clients.dto';
+import { AuditsService } from '../../audits/audits.service';
+import { MetricsService } from '../metrics/metrics.service';
 
 describe('ClientsService', () => {
   let service: ClientsService;
@@ -32,6 +34,17 @@ describe('ClientsService', () => {
     createQueryBuilder: jest.fn(),
   };
 
+  const mockAuditsService = {
+    logCreate: jest.fn(),
+    logUpdate: jest.fn(),
+    logDelete: jest.fn(),
+  };
+
+  const mockMetricsService = {
+    incrementClientsCreated: jest.fn(),
+    incrementClientsDeleted: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -39,6 +52,14 @@ describe('ClientsService', () => {
         {
           provide: getRepositoryToken(Client),
           useValue: mockRepository,
+        },
+        {
+          provide: AuditsService,
+          useValue: mockAuditsService,
+        },
+        {
+          provide: MetricsService,
+          useValue: mockMetricsService,
         },
       ],
     }).compile();
@@ -182,21 +203,19 @@ describe('ClientsService', () => {
   });
 
   describe('findOne', () => {
-    it('should find a client and increment view count', async () => {
+    it('should find a client without incrementing view count by default', async () => {
       const clientId = '550e8400-e29b-41d4-a716-446655440000';
       const clientBeforeView = { ...mockClient, viewCount: 5 };
-      const clientAfterView = { ...mockClient, viewCount: 6 };
 
       mockRepository.findOne.mockResolvedValue(clientBeforeView);
-      mockRepository.save.mockResolvedValue(clientAfterView);
 
       const result = await service.findOne(clientId);
 
-      expect(result.viewCount).toBe(6);
+      expect(result.viewCount).toBe(5);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
         where: { id: clientId },
       });
-      expect(mockRepository.save).toHaveBeenCalled();
+      expect(mockRepository.save).not.toHaveBeenCalled();
     });
 
     it('should throw NotFoundException when client not found', async () => {
@@ -212,8 +231,7 @@ describe('ClientsService', () => {
     it('should throw InternalServerErrorException on database error', async () => {
       const clientId = '550e8400-e29b-41d4-a716-446655440000';
 
-      mockRepository.findOne.mockResolvedValue(mockClient);
-      mockRepository.save.mockRejectedValue(new Error('Database error'));
+      mockRepository.findOne.mockRejectedValue(new Error('Database error'));
 
       await expect(service.findOne(clientId)).rejects.toThrow(
         InternalServerErrorException

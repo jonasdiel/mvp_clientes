@@ -62,12 +62,24 @@ describe('ClientsController', () => {
         companyValue: 10000000,
       };
 
+      const mockReq = {
+        user: { id: 'user-id', email: 'test@example.com' },
+        headers: { 'user-agent': 'test-agent' },
+      } as any;
+
+      const mockIp = '127.0.0.1';
+
       mockClientsService.create.mockResolvedValue(mockClient);
 
-      const result = await controller.create(createClientDto);
+      const result = await controller.create(createClientDto, mockReq, mockIp);
 
       expect(result).toEqual(mockClient);
-      expect(service.create).toHaveBeenCalledWith(createClientDto);
+      expect(service.create).toHaveBeenCalledWith(
+        createClientDto,
+        'user-id',
+        mockIp,
+        'test-agent'
+      );
       expect(service.create).toHaveBeenCalledTimes(1);
     });
   });
@@ -135,7 +147,7 @@ describe('ClientsController', () => {
 
       expect(result).toEqual(clientWithIncrementedView);
       expect(result.viewCount).toBe(1);
-      expect(service.findOne).toHaveBeenCalledWith(clientId);
+      expect(service.findOne).toHaveBeenCalledWith(clientId, false);
       expect(service.findOne).toHaveBeenCalledTimes(1);
     });
   });
@@ -148,16 +160,34 @@ describe('ClientsController', () => {
         salary: 600000,
       };
 
+      const mockReq = {
+        user: { id: 'user-id', email: 'test@example.com' },
+        headers: { 'user-agent': 'test-agent' },
+      } as any;
+
+      const mockIp = '127.0.0.1';
+
       const updatedClient = { ...mockClient, ...updateClientDto };
 
       mockClientsService.update.mockResolvedValue(updatedClient);
 
-      const result = await controller.update(clientId, updateClientDto);
+      const result = await controller.update(
+        clientId,
+        updateClientDto,
+        mockReq,
+        mockIp
+      );
 
       expect(result).toEqual(updatedClient);
       expect(result.name).toBe('João Silva Updated');
       expect(result.salary).toBe(600000);
-      expect(service.update).toHaveBeenCalledWith(clientId, updateClientDto);
+      expect(service.update).toHaveBeenCalledWith(
+        clientId,
+        updateClientDto,
+        'user-id',
+        mockIp,
+        'test-agent'
+      );
       expect(service.update).toHaveBeenCalledTimes(1);
     });
 
@@ -167,15 +197,33 @@ describe('ClientsController', () => {
         name: 'João Silva Updated',
       };
 
+      const mockReq = {
+        user: { id: 'user-id', email: 'test@example.com' },
+        headers: { 'user-agent': 'test-agent' },
+      } as any;
+
+      const mockIp = '127.0.0.1';
+
       const updatedClient = { ...mockClient, name: 'João Silva Updated' };
 
       mockClientsService.update.mockResolvedValue(updatedClient);
 
-      const result = await controller.update(clientId, updateClientDto);
+      const result = await controller.update(
+        clientId,
+        updateClientDto,
+        mockReq,
+        mockIp
+      );
 
       expect(result.name).toBe('João Silva Updated');
       expect(result.salary).toBe(mockClient.salary);
-      expect(service.update).toHaveBeenCalledWith(clientId, updateClientDto);
+      expect(service.update).toHaveBeenCalledWith(
+        clientId,
+        updateClientDto,
+        'user-id',
+        mockIp,
+        'test-agent'
+      );
     });
   });
 
@@ -184,12 +232,24 @@ describe('ClientsController', () => {
       const clientId = '550e8400-e29b-41d4-a716-446655440000';
       const expectedResponse = { deleted: true };
 
+      const mockReq = {
+        user: { id: 'user-id', email: 'test@example.com' },
+        headers: { 'user-agent': 'test-agent' },
+      } as any;
+
+      const mockIp = '127.0.0.1';
+
       mockClientsService.remove.mockResolvedValue(expectedResponse);
 
-      const result = await controller.remove(clientId);
+      const result = await controller.remove(clientId, mockReq, mockIp);
 
       expect(result).toEqual(expectedResponse);
-      expect(service.remove).toHaveBeenCalledWith(clientId);
+      expect(service.remove).toHaveBeenCalledWith(
+        clientId,
+        'user-id',
+        mockIp,
+        'test-agent'
+      );
       expect(service.remove).toHaveBeenCalledTimes(1);
     });
   });

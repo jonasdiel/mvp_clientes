@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { User } from '../entities/user.entity';
 import { LoginDto } from './dto/login.dto';
+import { AuditsService } from '../../audits/audits.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -29,6 +30,11 @@ describe('AuthService', () => {
     sign: jest.fn(),
   };
 
+  const mockAuditsService = {
+    create: jest.fn(),
+    logLogin: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -40,6 +46,10 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: mockJwtService,
+        },
+        {
+          provide: AuditsService,
+          useValue: mockAuditsService,
         },
       ],
     }).compile();
