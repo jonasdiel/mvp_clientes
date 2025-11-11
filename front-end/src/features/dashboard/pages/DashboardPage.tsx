@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -8,22 +9,76 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { authService } from '../../auth/services/auth.service';
+import {
+  dashboardService,
+  type DashboardMetrics,
+} from '../services/dashboard.service';
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        setLoading(true);
+        const data = await dashboardService.getMetrics();
+        setMetrics(data);
+      } catch (err) {
+        setError('Erro ao carregar métricas do dashboard');
+        console.error('Error fetching metrics:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
+  }, []);
 
   const handleLogout = () => {
     authService.logout();
     navigate('/login');
   };
 
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex justify-center items-center h-64">
+          <p className="text-lg text-muted-foreground">
+            Carregando métricas...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex flex-col justify-center items-center h-64 gap-4">
+          <p className="text-lg text-destructive">{error}</p>
+          <Button onClick={() => window.location.reload()}>
+            Tentar novamente
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Button variant="outline" onClick={handleLogout}>
-          Logout
-        </Button>
+        <div className="flex gap-2">
+          <Link to="/clients">
+            <Button variant="default">Clientes</Button>
+          </Link>
+          <Button variant="outline" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -35,7 +90,9 @@ export function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">0</div>
+            <div className="text-4xl font-bold">
+              {metrics?.totalClients ?? 0}
+            </div>
           </CardContent>
         </Card>
 
@@ -45,7 +102,9 @@ export function DashboardPage() {
             <CardDescription>Clientes cadastrados hoje</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">0</div>
+            <div className="text-4xl font-bold">
+              {metrics?.clientsToday ?? 0}
+            </div>
           </CardContent>
         </Card>
 
@@ -55,7 +114,9 @@ export function DashboardPage() {
             <CardDescription>Clientes mais acessados</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">0</div>
+            <div className="text-4xl font-bold">
+              {metrics?.mostViewedCount ?? 0}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -70,8 +131,8 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Você está autenticado com sucesso. Use o menu de navegação para
-              acessar as funcionalidades do sistema.
+              Você está autenticado com sucesso. Use o botão "Clientes" acima
+              para acessar a listagem completa e gerenciar seus clientes.
             </p>
           </CardContent>
         </Card>

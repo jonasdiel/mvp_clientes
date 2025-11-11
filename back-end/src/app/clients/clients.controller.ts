@@ -69,6 +69,41 @@ export class ClientsController {
     return this.clientsService.create(createClientDto, userId, ip, userAgent);
   }
 
+  @Get('metrics')
+  @ApiOperation({ summary: 'Obter métricas do dashboard' })
+  @ApiResponse({
+    status: 200,
+    description: 'Métricas retornadas com sucesso',
+    schema: {
+      type: 'object',
+      properties: {
+        totalClients: {
+          type: 'number',
+          example: 150,
+        },
+        clientsToday: {
+          type: 'number',
+          example: 5,
+        },
+        mostViewedCount: {
+          type: 'number',
+          example: 42,
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  getMetrics(): Promise<{
+    totalClients: number;
+    clientsToday: number;
+    mostViewedCount: number;
+  }> {
+    return this.clientsService.getMetrics();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Listar clientes com paginação e filtros' })
   @ApiResponse({

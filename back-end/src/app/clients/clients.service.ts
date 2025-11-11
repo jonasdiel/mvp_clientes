@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, MoreThanOrEqual, IsNull } from 'typeorm';
 import { Client } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -304,6 +304,58 @@ export class ClientsService {
         stack: error.stack,
       });
       throw new InternalServerErrorException('Erro ao excluir cliente');
+    }
+  }
+
+  async getMetrics(): Promise<{
+    totalClients: number;
+    clientsToday: number;
+    mostViewedCount: number;
+  }> {
+    try {
+      // Total de clientes (não deletados)
+      const totalClients = await this.clientRepository.count({
+        where: { deletedAt: IsNull() },
+      });
+
+      // Clientes cadastrados hoje
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const clientsToday = await this.clientRepository.count({
+        where: {
+          deletedAt: IsNull(),
+          createdAt: MoreThanOrEqual(today),
+        },
+      });
+
+      // Cliente mais visualizado (pega o maior viewCount)
+      const mostViewedClient = await this.clientRepository.findOne({
+        where: { deletedAt: IsNull() },
+        order: { viewCount: 'DESC' },
+      });
+
+      const mostViewedCount = mostViewedClient?.viewCount ?? 0;
+
+      this.logger.log({
+        message: 'Metrics calculated',
+        totalClients,
+        clientsToday,
+        mostViewedCount,
+      });
+
+      return {
+        totalClients,
+        clientsToday,
+        mostViewedCount,
+      };
+    } catch (error) {
+      this.logger.error({
+        message: 'Error calculating metrics',
+        error: error.message,
+        stack: error.stack,
+      });
+      throw new InternalServerErrorException('Erro ao calcular métricas');
     }
   }
 }
