@@ -256,7 +256,11 @@ describe('ClientsController', () => {
 
       mockClientsService.remove.mockResolvedValue(expectedResponse);
 
-      const result = await controller.remove(clientId, mockReq as never, mockIp);
+      const result = await controller.remove(
+        clientId,
+        mockReq as never,
+        mockIp
+      );
 
       expect(result).toEqual(expectedResponse);
       expect(service.remove).toHaveBeenCalledWith(
