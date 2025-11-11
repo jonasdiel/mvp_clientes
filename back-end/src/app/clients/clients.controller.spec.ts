@@ -7,6 +7,17 @@ import { QueryClientsDto } from './dto/query-clients.dto';
 import { Client } from './entities/client.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+interface MockRequest {
+  user?: {
+    id: string;
+    email: string;
+  };
+  headers: {
+    'user-agent'?: string;
+    [key: string]: string | undefined;
+  };
+}
+
 describe('ClientsController', () => {
   let controller: ClientsController;
   let service: ClientsService;
@@ -62,16 +73,20 @@ describe('ClientsController', () => {
         companyValue: 10000000,
       };
 
-      const mockReq = {
+      const mockReq: MockRequest = {
         user: { id: 'user-id', email: 'test@example.com' },
         headers: { 'user-agent': 'test-agent' },
-      } as any;
+      };
 
       const mockIp = '127.0.0.1';
 
       mockClientsService.create.mockResolvedValue(mockClient);
 
-      const result = await controller.create(createClientDto, mockReq, mockIp);
+      const result = await controller.create(
+        createClientDto,
+        mockReq as never,
+        mockIp
+      );
 
       expect(result).toEqual(mockClient);
       expect(service.create).toHaveBeenCalledWith(
@@ -160,10 +175,10 @@ describe('ClientsController', () => {
         salary: 600000,
       };
 
-      const mockReq = {
+      const mockReq: MockRequest = {
         user: { id: 'user-id', email: 'test@example.com' },
         headers: { 'user-agent': 'test-agent' },
-      } as any;
+      };
 
       const mockIp = '127.0.0.1';
 
@@ -174,7 +189,7 @@ describe('ClientsController', () => {
       const result = await controller.update(
         clientId,
         updateClientDto,
-        mockReq,
+        mockReq as never,
         mockIp
       );
 
@@ -197,10 +212,10 @@ describe('ClientsController', () => {
         name: 'João Silva Updated',
       };
 
-      const mockReq = {
+      const mockReq: MockRequest = {
         user: { id: 'user-id', email: 'test@example.com' },
         headers: { 'user-agent': 'test-agent' },
-      } as any;
+      };
 
       const mockIp = '127.0.0.1';
 
@@ -211,7 +226,7 @@ describe('ClientsController', () => {
       const result = await controller.update(
         clientId,
         updateClientDto,
-        mockReq,
+        mockReq as never,
         mockIp
       );
 
@@ -232,16 +247,16 @@ describe('ClientsController', () => {
       const clientId = '550e8400-e29b-41d4-a716-446655440000';
       const expectedResponse = { deleted: true };
 
-      const mockReq = {
+      const mockReq: MockRequest = {
         user: { id: 'user-id', email: 'test@example.com' },
         headers: { 'user-agent': 'test-agent' },
-      } as any;
+      };
 
       const mockIp = '127.0.0.1';
 
       mockClientsService.remove.mockResolvedValue(expectedResponse);
 
-      const result = await controller.remove(clientId, mockReq, mockIp);
+      const result = await controller.remove(clientId, mockReq as never, mockIp);
 
       expect(result).toEqual(expectedResponse);
       expect(service.remove).toHaveBeenCalledWith(
