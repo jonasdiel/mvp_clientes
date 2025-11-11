@@ -23,7 +23,6 @@ Desenvolvido conforme requisitos em [REQUIREMENTS.md](REQUIREMENTS.md)
 - [CI/CD](#-cicd)
 - [Observabilidade](#-observabilidade)
 - [Segurança](#-segurança)
-- [Contribuindo](#-contribuindo)
 
 ## 🎯 Visão Geral
 
