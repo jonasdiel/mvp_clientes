@@ -1,196 +1,166 @@
-# Front-end - MVP Clientes
+# Front-End - MVP Clientes
 
-Interface web em React com Vite e TypeScript para gestão de clientes.
+Interface web moderna desenvolvida com React 19, Vite e TypeScript para gerenciamento de clientes com autenticação, formulários validados e interface responsiva.
 
 ## 🛠️ Tecnologias
 
-- **React 18** - Biblioteca UI
-- **Vite** - Build tool e dev server
-- **TypeScript** - Tipagem estática
-- **React Router** - Roteamento
-- **Vitest** - Framework de testes
-- **Docker** - Containerização
+| Tecnologia | Versão | Descrição |
+|------------|--------|-----------|
+| **React** | 19.0.0 | Biblioteca UI |
+| **Vite** | 7.0.0 | Build tool e dev server |
+| **TypeScript** | 5.9.3 | Superset tipado do JavaScript |
+| **React Router** | 6.29.0 | Roteamento SPA |
+| **React Hook Form** | 7.66.0 | Gerenciamento de formulários |
+| **Zod** | 4.1.12 | Validação de schemas |
+| **Zustand** | 5.0.8 | Gerenciamento de estado |
+| **Axios** | 1.6.0 | Cliente HTTP |
+| **Tailwind CSS** | 3.4.3 | Framework CSS utility-first |
+| **Radix UI** | - | Componentes acessíveis |
+| **Vitest** | 3.0.5 | Framework de testes |
 
-## 📋 Pré-requisitos
+## ✨ Funcionalidades
 
-- Docker e Docker Compose instalados
-- Node.js 20+ (para desenvolvimento local sem Docker)
+- ✅ **Autenticação JWT** com proteção de rotas
+- ✅ **Dashboard Administrativo** com métricas e estatísticas
+- ✅ **CRUD de Clientes** completo com paginação, busca e filtros
+- ✅ **Validação de Formulários** com Zod e React Hook Form
+- ✅ **Interface Responsiva** com Tailwind CSS
+- ✅ **Componentes Acessíveis** com Radix UI
+- ✅ **Testes Unitários** com Vitest
 
-## 🚀 Execução com Docker
+## 🚀 Execução
 
-### 1. Configurar variáveis de ambiente
+### Docker (Recomendado)
 
 ```bash
-cp .env.example .env
-```
-
-Edite o arquivo `.env` conforme necessário, especialmente a URL da API.
-
-### 2. Iniciar o serviço
-
-```bash
-# Iniciar o front-end
-docker-compose up -d
+# Iniciar serviço
+docker compose up -d
 
 # Ver logs
-docker-compose logs -f
+docker compose logs -f
 
-# Parar o serviço
-docker-compose down
+# Parar serviço
+docker compose down
 ```
 
-### 3. Acessar a aplicação
+**Acessar**: http://localhost:4200
 
-- **Front-end**: http://localhost:4200
-
-## 🔧 Desenvolvimento Local (sem Docker)
-
-### 1. Instalar dependências
+### Desenvolvimento Local
 
 ```bash
-npm install
+# Na raiz do monorepo
+npx nx serve front-end
 ```
 
-### 2. Configurar variáveis de ambiente
+**Acessar**: http://localhost:4200
 
-```bash
-cp .env.example .env
-```
+## 🗺️ Rotas
 
-### 3. Executar a aplicação
+### Públicas
+- `/` - Redireciona para `/login`
+- `/login` - Página de autenticação
+  - Usuários autenticados são redirecionados para `/dashboard`
 
-```bash
-# Desenvolvimento
-npm run dev
+### Protegidas (JWT)
+- `/dashboard` - Dashboard administrativo com métricas e estatísticas
+- `/clients` - Lista de clientes com paginação, busca e filtros
+- `/clients/:id` - Detalhes do cliente (incrementa contador de visualizações)
+- `*` - Rotas não encontradas redirecionam para `/login`
 
-# Build para produção
-npm run build
-
-# Preview do build de produção
-npm run preview
-```
-
-## 📦 Scripts Disponíveis
-
-```bash
-npm run dev            # Inicia servidor de desenvolvimento
-npm run build          # Build para produção
-npm run preview        # Preview do build de produção
-npm run test           # Executar testes com Vitest
-npm run test:ui        # Executar testes com UI
-npm run lint           # Verificar código com ESLint
-```
+> **Proteção de Rotas**: Todas as rotas protegidas verificam a presença do token JWT. Usuários não autenticados são redirecionados para `/login`.
 
 ## 🧪 Testes
 
 ```bash
-# Executar todos os testes
-npm run test
+# Executar testes
+npx nx test front-end
 
-# Modo watch
-npm run test:watch
+# Com coverage
+npx nx test front-end --coverage
 
-# Coverage
-npm run test:coverage
-
-# UI interativa
-npm run test:ui
+# Watch mode
+npx nx test front-end --watch
 ```
 
-## 📁 Estrutura do Projeto
+## 📂 Estrutura
 
 ```
 front-end/
 ├── src/
-│   ├── app/              # Componentes principais
-│   ├── assets/           # Imagens, fontes, etc
-│   ├── styles.css        # Estilos globais
-│   └── main.tsx          # Entry point
-├── public/               # Arquivos estáticos
-├── index.html            # HTML base
-├── docker-compose.yml    # Configuração Docker
-├── Dockerfile            # Build da imagem
-├── vite.config.ts        # Configuração Vite
-├── .env.example          # Exemplo de variáveis de ambiente
-└── README.md             # Esta documentação
-```
-
-## 🎨 Estrutura de Componentes (Sugerida)
-
-```
-src/
-├── app/
-│   ├── components/       # Componentes reutilizáveis
-│   ├── pages/            # Páginas/views
-│   ├── services/         # Chamadas à API
-│   ├── hooks/            # Custom hooks
-│   ├── contexts/         # Contexts do React
-│   ├── types/            # Tipos TypeScript
-│   └── utils/            # Funções utilitárias
+│   ├── app/                           # Rotas e configuração
+│   │   └── app.tsx                    # Router com rotas públicas e protegidas
+│   ├── components/
+│   │   └── ui/                        # Componentes UI (shadcn/ui + Radix)
+│   ├── features/
+│   │   ├── auth/                      # Autenticação
+│   │   │   ├── pages/
+│   │   │   │   ├── LoginPage.tsx      # Página de login
+│   │   │   │   └── LoginForm.tsx      # Formulário de login
+│   │   │   └── services/
+│   │   │       └── auth.service.ts    # Serviço de autenticação JWT
+│   │   ├── clients/                   # Módulo de clientes
+│   │   │   ├── components/
+│   │   │   │   ├── ClientForm.tsx     # Formulário de criação/edição
+│   │   │   │   └── ClientModal.tsx    # Modal para operações
+│   │   │   ├── pages/
+│   │   │   │   ├── ClientsListPage.tsx    # Lista com paginação
+│   │   │   │   └── ClientDetailPage.tsx   # Detalhes do cliente
+│   │   │   ├── schemas/
+│   │   │   │   └── client.schema.ts   # Validação Zod
+│   │   │   └── services/
+│   │   │       └── clients.service.ts # Serviço de API de clientes
+│   │   └── dashboard/                 # Dashboard administrativo
+│   │       ├── pages/
+│   │       │   └── DashboardPage.tsx  # Métricas e estatísticas
+│   │       └── services/
+│   │           └── dashboard.service.ts
+│   ├── shared/
+│   │   ├── services/
+│   │   │   └── api.ts                 # Configuração Axios + interceptors
+│   │   ├── store/
+│   │   │   └── auth.store.ts          # Store Zustand para auth
+│   │   ├── types/
+│   │   │   └── client.types.ts        # Interfaces TypeScript
+│   │   └── utils/
+│   │       ├── currency.ts            # Formatação de moeda
+│   │       └── logger.ts              # Logger estruturado
+│   ├── lib/
+│   │   └── utils.ts                   # Utilitários gerais
+│   └── main.tsx                       # Entry point
+├── docker-compose.yml                 # Compose para produção (Nginx)
+├── Dockerfile                         # Multi-stage build
+├── nginx.conf                         # Configuração Nginx
+└── README.md
 ```
 
 ## 🔌 Integração com API
 
-A URL da API é configurada via variável de ambiente `VITE_API_URL`:
-
-```typescript
-// Exemplo de uso
-const API_URL = import.meta.env.VITE_API_URL;
-
-fetch(`${API_URL}/clientes`)
-  .then((response) => response.json())
-  .then((data) => console.log(data));
-```
+Configurado via Axios em `src/shared/services/api.ts` com:
+- Base URL: `VITE_API_URL`
+- Interceptor JWT automático
+- Tratamento de erros
 
 ## 🌐 Variáveis de Ambiente
 
-Todas as variáveis de ambiente devem ter o prefixo `VITE_` para serem acessíveis no código:
+Arquivo `.env`:
 
 ```env
 VITE_API_URL=http://localhost:3000
-VITE_ENABLE_MOCK_API=false
+VITE_LOG_LEVEL=info
 ```
 
-Acesso no código:
-
-```typescript
-const apiUrl = import.meta.env.VITE_API_URL;
-```
-
-## 🐛 Debug
-
-Para debugar no navegador, use o React DevTools:
-
-- [Chrome Extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
-- [Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
-
-## 📱 Build para Produção
+## 📄 Comandos Úteis
 
 ```bash
+# Desenvolvimento
+npx nx serve front-end
+
 # Build
-npm run build
+npx nx build front-end
 
-# O build estará em dist/
-# Para testar localmente:
-npm run preview
-```
+# Testes
+npx nx test front-end
 
-## 🚀 Deploy
-
-O build gera arquivos estáticos na pasta `dist/` que podem ser servidos por qualquer servidor web (Nginx, Apache, etc).
-
-### Exemplo com Nginx:
-
-```nginx
-server {
-    listen 80;
-    server_name seu-dominio.com;
-
-    root /caminho/para/dist;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
+# Lint
+npx nx lint front-end
 ```
